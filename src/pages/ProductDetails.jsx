@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosInstance from "../api/axiosInstance";
-import "../styles/productDetails.css";
+import "../styles/ProductDetails.css";
 
 export default function ProductDetails() {
 
