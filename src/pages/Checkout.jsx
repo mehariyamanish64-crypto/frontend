@@ -4,116 +4,119 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Checkout() {
 
-const navigate = useNavigate();
-const location = useLocation();
-const [cart, setCart] = useState([]);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [cart, setCart] = useState([]);
 
-useEffect(() => {
-if (location.state && location.state.products) {
-setCart(location.state.products);
-}
-}, [location]);
+  useEffect(() => {
+    if (location.state && location.state.products) {
+      setCart(location.state.products);
+    }
+  }, [location]);
 
-const totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-const handlePayment = async () => {
+  // ✅ Razorpay script loader
+  const loadRazorpay = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  };
 
-try {
+  const handlePayment = async () => {
 
-const res = await axiosInstance.post("/orders/create-order", {
-amount: totalAmount
-});
+    console.log("Pay Now clicked");
 
-const orderData = res.data;
-const razorpayOrder = orderData.razorpayOrder;
+    const isLoaded = await loadRazorpay();
 
-const options = {
+    if (!isLoaded) {
+      alert("Razorpay SDK failed to load");
+      return;
+    }
 
-key: "rzp_test_SNu5v4Q0mXARq1",
+    try {
 
-amount: razorpayOrder.amount,
-currency: razorpayOrder.currency,
-name: "Gift Shop",
-description: "Order Payment",
+      const res = await axiosInstance.post("/orders/create-order", {
+        amount: totalAmount
+      });
 
-order_id: razorpayOrder.id,
+      const orderData = res.data;
+      const razorpayOrder = orderData.razorpayOrder;
 
-handler: async function (response) {
+      const options = {
+        key: "rzp_test_SNu5v4Q0mXARq1",
+        amount: razorpayOrder.amount,
+        currency: razorpayOrder.currency,
+        name: "Gift Shop",
+        description: "Order Payment",
+        order_id: razorpayOrder.id,
 
-await axiosInstance.post("/orders/payment-success", {
+        handler: async function (response) {
 
-razorpayPaymentId: response.razorpay_payment_id,
-razorpayOrderId: response.razorpay_order_id,
-razorpaySignature: response.razorpay_signature,
+          await axiosInstance.post("/orders/payment-success", {
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpayOrderId: response.razorpay_order_id,
+            razorpaySignature: response.razorpay_signature,
+            orderId: orderData.orderId
+          });
 
-orderId: orderData.orderId
+          alert("Payment Successful");
+          navigate("/orders");
+        },
 
-});
+        prefill: {
+          name: "Customer",
+          email: "customer@gmail.com",
+          contact: "9999999999"
+        },
 
-alert("Payment Successful");
+        theme: {
+          color: "#3399cc"
+        }
+      };
 
-navigate("/orders");
+      const rzp = new window.Razorpay(options);
 
-},
+      rzp.on("payment.failed", function (response) {
+        alert("Payment Failed");
+        console.log(response.error);
+      });
 
-prefill: {
-name: "Customer",
-email: "customer@gmail.com",
-contact: "9999999999"
-},
+      rzp.open();
 
-theme: {
-color: "#3399cc"
-}
+    } catch (error) {
+      console.log(error);
+      alert("Payment error");
+    }
+  };
 
-};
+  return (
+    <div>
 
-const rzp = new window.Razorpay(options);
+      <h2>Checkout Page</h2>
 
-rzp.on("payment.failed", function (response) {
+      {cart.map((item, index) => (
+        <div key={index}>
+          <p>{item.name}</p>
+          <p>Price: ₹{item.price}</p>
+          <p>Quantity: {item.quantity}</p>
+        </div>
+      ))}
 
-alert("Payment Failed");
+      <h3>Total Amount : ₹{totalAmount}</h3>
 
-console.log(response.error);
+      <button onClick={handlePayment}>
+        Pay Now
+      </button>
 
-});
-
-rzp.open();
-
-} catch (error) {
-
-console.log(error);
-
-}
-
-};
-
-return (
-
-<div>
-
-<h2>Checkout Page</h2>
-
-{cart.map((item, index) => (
-
-<div key={index}>
-
-<p>{item.name}</p>
-<p>Price: ₹{item.price}</p>
-<p>Quantity: {item.quantity}</p>
-
-</div>
-
-))}
-
-<h3>Total Amount : ₹{totalAmount}</h3>
-
-<button onClick={handlePayment}>
-Pay Now
-</button>
-
-</div>
-
-);
-
+    </div>
+  );
 }
