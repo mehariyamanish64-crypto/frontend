@@ -1,0 +1,139 @@
+/* Full Screen Center Layout */
+
+.home-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #1f1c2c, #928dab);
+  font-family: 'Poppins', sans-serif;
+}
+
+
+/* Center Card */
+
+.hero {
+  text-align: center;
+  padding: 60px 45px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+
+/* LOGO */
+
+.small-logo {
+  width: 75px;
+  height: auto;
+  margin-bottom: 5px;
+  border-radius: 50%;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.45);
+}
+
+
+/* GiftShop Title */
+
+.hero h1 {
+  font-size: 50px;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(45deg, #ffffff, #ffd369);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 2px;
+}
+
+
+/* Subtitle */
+
+.hero p {
+  color: #f1f1f1;
+  margin: 5px 0 15px 0;
+  font-size: 18px;
+}
+
+
+/* Buttons Section */
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+
+/* Common Button Style */
+
+.btn {
+  padding: 14px 35px;
+  border-radius: 40px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.4s ease;
+  letter-spacing: 1px;
+  display: inline-block;
+  text-align: center;
+  min-width: 120px;
+}
+
+
+/* Login Button */
+
+.login-btn {
+  background: #ffffff;
+  color: #1f1c2c;
+  border: none;
+}
+
+.login-btn:hover {
+  background: #ffd369;
+  transform: translateY(-4px);
+  box-shadow: 0 15px 25px rgba(0,0,0,0.35);
+}
+
+
+/* Register Button */
+
+.register-btn {
+  background: transparent;
+  border: 2px solid #ffffff;
+  color: white;
+}
+
+.register-btn:hover {
+  background: #ffffff;
+  color: #1f1c2c;
+  transform: translateY(-4px);
+  box-shadow: 0 15px 25px rgba(0,0,0,0.35);
+}
+
+
+/* Responsive */
+
+@media (max-width:768px){
+
+  .hero{
+    padding:40px 25px;
+  }
+
+  .hero h1{
+    font-size:34px;
+  }
+
+  .small-logo{
+    width:55px;
+  }
+
+  .hero-buttons{
+    flex-direction:column;
+    gap:15px;
+  }
+
+}

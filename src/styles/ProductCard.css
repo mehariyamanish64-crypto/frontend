@@ -1,0 +1,139 @@
+/* Product Card Container */
+.product-card {
+  background: #2c2c3e;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+}
+
+/* Product Image */
+.product-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.product-card img:hover {
+  transform: scale(1.05);
+}
+
+/* Product Name */
+.product-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.3;
+  min-height: 48px; /* ensures multi-line names are visible */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Category */
+.product-card .category {
+  font-size: 13px;
+  color: #aaa;
+  text-transform: capitalize;
+}
+
+/* Price */
+.product-card .price {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffd700;
+  margin-top: 5px;
+}
+
+/* Buttons Container */
+.product-card-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+/* Buy Now Button */
+.buy-btn {
+  flex: 1;
+  padding: 10px;
+  background: linear-gradient(45deg, #ffd369, #ffb703);
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #222;
+}
+
+.buy-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+
+/* Add to Cart Button */
+.cart-btn {
+  flex: 1;
+  padding: 10px;
+  background: #1f1c2c;
+  border: 2px solid #ffd700;
+  border-radius: 10px;
+  color: #ffd700;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cart-btn:hover {
+  background: #ffd700;
+  color: #222;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .product-card img {
+    height: 180px;
+  }
+
+  .product-card h3 {
+    font-size: 16px;
+    min-height: 44px;
+  }
+
+  .product-card .price {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-card {
+    padding: 15px;
+  }
+
+  .product-card img {
+    height: 150px;
+  }
+
+  .product-card-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .buy-btn, .cart-btn {
+    padding: 8px;
+    font-size: 14px;
+  }
+}
